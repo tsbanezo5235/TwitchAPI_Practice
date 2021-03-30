@@ -1,60 +1,57 @@
 body {
-    background: url(https://cdn.leagueoflegends.com/lolkit/1.1.6/resources/images/bg-default.jpg) no-repeat center;
-    background-attachment: fixed;
-    margin: 0;
+  background: url("https://cdn.leagueoflegends.com/lolkit/1.1.6/resources/images/bg-default.jpg") no-repeat center;
+  background-attachment: fixed;
+  margin: 0;
 }
-
-.container {
-    background: rgba(0, 0, 0, 0.5);
-    min-height: 100vh;
-    padding-top: 30px;
+body .container {
+  background: rgba(0,0,0,0.5);
+  min-height: 100vh;
+  padding-top: 30px;
 }
-
-.col {
-    width: 300px;
-    display: inline-block;
-    margin-bottom: 25px;
-}
-
 .row {
-    width: 1000px;
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+  width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
-
-.intro {
-    color: white;
+.col {
+  width: 300px;
+  display: inline-block;
+  margin-bottom: 25px;
+  transition: ease-in-out 0.5s;
 }
-
-.bottom {
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 10px;
-    position: relative;
-    display: flex;
-    align-items: center;
+.col:hover {
+  box-shadow: 0 0 10px 5px #353535;
+  filter: brightness(1.4);
 }
-
-.avatar{
-    width: 50px;
-    height: 50px;
-    overflow: hidden;
-    border-radius: 50%;
-    margin-right: 15px;
+.col .preview img {
+  width: 100%;
 }
-
-.avatar img {
-    width: 100%;
+.col .bottom {
+  background-color: rgba(0,0,0,0.7);
+  padding: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
-.preview img{
-    width: 100%;
+.col .intro {
+  color: #fff;
 }
-
-.channel_name {
-    margin-bottom: 10px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    width: 200px;
+.col .intro .channel_name {
+  margin-bottom: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 200px;
+}
+.col .avatar {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+.col .avatar img {
+  width: 100%;
 }
