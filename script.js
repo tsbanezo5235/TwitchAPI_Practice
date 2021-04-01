@@ -1,4 +1,6 @@
 const clientID = 'y5ioylmwm8h4lz58q3pf6mpe0ueldi';
+let nowIndex = 0;
+let isLoading = false;
 // const clientPW = 'kpsf9ox854qvi8a46qvmgfp3pr9frz';
 // let token;
 // let response;
@@ -31,40 +33,59 @@ function getData(cb) {
 	// 		cb(null, response);
 	// 	}
 	// })
+	
 	let xhr = new XMLHttpRequest();
-	let url = 'https://api.twitch.tv/kraken/streams/?client_id=' + clientID +'&game=League%20of%20Legends&limit=20'
+	let url = 'https://api.twitch.tv/kraken/streams/?client_id=' + clientID +'&game=League%20of%20Legends&limit=20&offset=' + nowIndex;
 	xhr.open('GET', url, true);
 	xhr.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
 	xhr.setRequestHeader('Client-ID',clientID);
 	xhr.onload = function() {
 		if(this.status >= 200 && this.status < 400) {
 			let response = JSON.parse(this.response);
-			console.log(response);
 			cb(null, response);
 		}
 	}
+	isLoading = true;
 	xhr.onerror = function() {
 		console.log('error heyhey!');
 	}
 	xhr.send();
 }
+function appendData() {
+	getData((err, data) => {
+		const {streams} = data;
+		const $row = $('.row');
+		for (let stream of streams) {
+			$row.append(getColumn(stream));
+		}
+		nowIndex += 20
+		isLoading = false;
+	})
+}
+// getData((err, data) => {
+// 	const {streams} = data;
+// 	const $row = $('.row');
+// 	for (let stream of streams) {
+// 		$row.append(getColumn(stream));
+// 	}
+// })
 
-getData((err, data) => {
-	console.log(data);
-	const {streams} = data;
-	console.log(streams);
-	const $row = $('.row');
-	for (let stream of streams) {
-		console.log(stream);
-		$row.append(getColumn(stream));
-	}
+$(document).ready(function() {
+	appendData();
+	$(window).scroll(function() {
+		if ($(window).scrollTop() + $(window).height() > $(document).height() - 150){
+			if(!isLoading) {
+				appendData();
+			} 
+		}
+	})
 })
 
 function getColumn(data) {
 	return `
 	<div class="col">
 				<div class="preview">
-					<img src="${data.preview.medium}">
+					<img src="${data.preview.medium}" onload=this.style.opacity=1>
 				</div>
 				<div class="bottom"> 
 					<div class="avatar">
@@ -77,3 +98,6 @@ function getColumn(data) {
 				</div>
 			</div>`;
 }
+
+
+
