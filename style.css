@@ -58,3 +58,8 @@ body .container {
 .col .avatar img {
   width: 100%;
 }
+.menu {
+  color: #fff;
+  padding: 30px;
+  text-align: center;
+}

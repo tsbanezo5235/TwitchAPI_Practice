@@ -1,7 +1,16 @@
 const clientID = 'y5ioylmwm8h4lz58q3pf6mpe0ueldi';
 let nowIndex = 0;
 let isLoading = false;
-// const clientPW = 'kpsf9ox854qvi8a46qvmgfp3pr9frz';
+let LANG = 'zh';
+
+function changeLang(lang) {
+	$('.menu h1').text(window.I18N[lang]['TITLE']);
+	LANG = lang;
+	$('.row').empty();
+	nowIndex = 0;
+	appendData(LANG);
+}
+
 // let token;
 // let response;
 // let xhr = new XMLHttpRequest();
@@ -18,7 +27,7 @@ let isLoading = false;
 // };
 // token = '78muxu5xvziwq791n0xfa423c2vvfz';
 
-function getData(cb) {
+function getData(lang, cb) {
 	// $.ajax({
 	// 	url: 'https://api.twitch.tv/kraken/streams/?client_id=' + clientID +'&game=League%20of%20Legends&limit=20',
 	// 	beforeSend:(xhr) => {
@@ -35,7 +44,7 @@ function getData(cb) {
 	// })
 	
 	let xhr = new XMLHttpRequest();
-	let url = 'https://api.twitch.tv/kraken/streams/?client_id=' + clientID +'&game=League%20of%20Legends&limit=20&offset=' + nowIndex;
+	let url = 'https://api.twitch.tv/kraken/streams/?client_id=' + clientID +'&game=League%20of%20Legends&limit=20&offset=' + nowIndex + '&language=' + lang;
 	xhr.open('GET', url, true);
 	xhr.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
 	xhr.setRequestHeader('Client-ID',clientID);
@@ -51,12 +60,15 @@ function getData(cb) {
 	}
 	xhr.send();
 }
-function appendData() {
-	getData((err, data) => {
+function appendData(lang) {
+	getData(lang, (err, data) => {
 		const {streams} = data;
-		const $row = $('.row');
+		const $row = document.querySelector('.row');
 		for (let stream of streams) {
-			$row.append(getColumn(stream));
+			const div = document.createElement('div');
+			$row.appendChild(div);
+			div.outerHTML = getColumn(stream);
+			// $row.append(getColumn(stream));
 		}
 		nowIndex += 20
 		isLoading = false;
@@ -71,15 +83,26 @@ function appendData() {
 // })
 
 $(document).ready(function() {
-	appendData();
+	appendData(LANG);
 	$(window).scroll(function() {
 		if ($(window).scrollTop() + $(window).height() > $(document).height() - 150){
 			if(!isLoading) {
-				appendData();
+				appendData(LANG);
 			} 
 		}
 	})
 })
+
+// document.addEventListener("DOMContentLoaded", function() {
+// 	appendData();
+// 	window.addEventListener('scroll', function() {
+// 		if(document.body.scrollTop + window.innerHeight > document.documentElement.scrollHeight - 150){
+// 			if(!isLoading) {
+// 				appendData();
+// 			} 
+// 		}
+// 	})
+// })
 
 function getColumn(data) {
 	return `
