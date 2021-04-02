@@ -1,10 +1,17 @@
+var I18N = {
+	en: require('./lang-en.js'),
+	zh: require('./lang-zh-tw.js')
+}
+
+var $ = require('jquery');
+
 const clientID = 'y5ioylmwm8h4lz58q3pf6mpe0ueldi';
 let nowIndex = 0;
 let isLoading = false;
 let LANG = 'zh';
 
 function changeLang(lang) {
-	$('.menu h1').text(window.I18N[lang]['TITLE']);
+	$('.menu h1').text(I18N[lang]['TITLE']);
 	LANG = lang;
 	$('.row').empty();
 	nowIndex = 0;
@@ -90,6 +97,14 @@ $(document).ready(function() {
 				appendData(LANG);
 			} 
 		}
+	})
+
+	$('.change_en').click(() => {
+		changeLang('en');
+	})
+
+	$('.change_zh').click(() => {
+		changeLang('zh');
 	})
 })
 

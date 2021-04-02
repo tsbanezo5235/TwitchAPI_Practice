@@ -1,0 +1,20 @@
+{
+  "name": "twitch-practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lang-en.js",
+  "dependencies": {
+    "moment": "^2.29.1",
+    "webpack": "^5.30.0",
+    "webpack-cli": "^4.6.0"
+  },
+  "devDependencies": {
+    "jquery": "^3.6.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
