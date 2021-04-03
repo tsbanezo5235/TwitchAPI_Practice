@@ -7,68 +7,54 @@ import del from 'del'
 import minifyHTML from 'gulp-minify-html'
 import concat from 'gulp-concat'
 import inline from 'gulp-inline'
-// import { css } from 'jquery'
-// const gulp = require('gulp');
-// const stylus = require('gulp-stylus');
-// const cleanCSS = require('gulp-clean-css');
-// const uglify = require('gulp-uglify');
-// const rename = require('gulp-rename');
-// const del = require('del');
-// const minifyHTML = require('gulp-minify-html');
-// const concat = require('gulp-concat');
-// const inline = require('gulp-inline');
+import webpack from 'webpack-stream'
+
 
 export function clean(cb) {
-  return del('./public')
-  cb();
+  del('./public/**');
+	cb();
 }
 
-export function tostylus(cb) {
-	return gulp.src('./css/**.styl')
-    .pipe(stylus())
-    .pipe(gulp.dest('./css'));
-		cb();
-}
-
-export function minifyCss(cb) {
-	return gulp.src('./css/**.css')
+export function CSS(cb) {
+	gulp
+		.src('./src/css/**.styl')
+		.pipe(stylus())
 		.pipe(cleanCSS())
 		.pipe(gulp.dest('./dist'));
-		cb();
+	cb();
 }
 
-export function js(cb) {
-	return gulp.src('./src/js/**.js')
-		.pipe(concat())
+export function JS(cb) {
+	gulp
+		.src('./src/js/**.js')
+		.pipe(concat('all.js'))
+		.pipe(webpack(require('./webpack.config.js')))
 		.pipe(uglify())
-		.pipe(rename(function(path) {
-			path.basename += ".min";
-			path.extname = ".js";
-	  }))
+		.pipe(rename('main.js'))
 		.pipe(gulp.dest('./dist'));
-		cb();
+	cb();
 }
 
 export function HTML(cb) {
-	return gulp.src('./src/html/**.html')
+	gulp
+		.src('./src/html/**.html')
 		.pipe(minifyHTML())
+		.pipe(rename('index.html'))
 		.pipe(gulp.dest('./dist'));
-		cb();
+	cb();
 }
 
 export function toinline() {
-	return gulp.src('./src/html/twitch_search.html')
+	return gulp
+		.src('./dist/index.html')
 		.pipe(inline({
-			base: 'public/',
-			js: './dist/**.js',
-			css: './dist/**.css'
+			base: './',
 		}))
 		.pipe(gulp.dest('./public'));
-		
 }
 
 
-gulp.task('default', (cb) => {
-	gulp.series('clean','tostylus','minifyCss','js','HTML','toinline');
-	cb();
+gulp.task('default', done => {
+	gulp.series('clean','wat','CSS','JS','HTML','toinline');
+	done();
 });

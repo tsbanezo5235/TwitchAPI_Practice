@@ -1,9 +1,11 @@
+var $ = require('jquery');
+
 var I18N = {
 	en: require('./lang-en.js'),
 	zh: require('./lang-zh-tw.js')
 }
 
-var $ = require('jquery');
+
 
 const clientID = 'y5ioylmwm8h4lz58q3pf6mpe0ueldi';
 let nowIndex = 0;
